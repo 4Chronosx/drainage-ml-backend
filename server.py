@@ -6,6 +6,17 @@ import numpy as np # type: ignore
 
 app = FastAPI()
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # or ["*"] for all
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 # Load trained model + scaler + ranking
 scaler_100 = joblib.load("models/100yr/scaler_100yr.pkl")
 kmeans_100 = joblib.load("models/100yr/kmeans_100yr.pkl")

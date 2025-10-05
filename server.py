@@ -2,20 +2,23 @@ from fastapi import FastAPI # type: ignore
 from pydantic import BaseModel # type: ignore
 import joblib # type: ignore
 import numpy as np # type: ignore
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-from fastapi.middleware.cors import CORSMiddleware
+# Allow local frontend + railway domain
+origins = [
+    "http://localhost:3000",
+    "https://drainage-ml-backend-production-87a9.up.railway.app"
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # or ["*"] for all
+    allow_origins=origins,          # or ["*"] for all origins (less secure)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 # Load trained model + scaler + ranking
 scaler_100 = joblib.load("models/100yr/scaler_100yr.pkl")
